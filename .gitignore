@@ -12,5 +12,6 @@
 /nginx/ssl/*.crt
 /nginx/ssl/*.key
 /nginx/ssl/*.csr
-
+/workspace/insecure_id_rsa
+/workspace/insecure_id_rsa.pub
 .DS_Store
