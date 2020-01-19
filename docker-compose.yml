@@ -137,15 +137,33 @@ services:
     links:
       - docker-in-docker
     networks:
-      - frontend
-      - backend
+      frontend:
+          aliases:
+            - spgr.local
+            - spgr.trc
+            - spgr.epp
+            - spgr.cloud
+            - ms-ed.spgr.cloud
+            - ms-ed.spgr.local
+            - sambo.developer
+            - olymp.developer
+      backend:
+        aliases:
+          - spgr.local
+          - spgr.trc
+          - spgr.epp
+          - spgr.cloud
+          - ms-ed.spgr.cloud
+          - ms-ed.spgr.local
+          - sambo.developer
+          - olymp.developer
 
   ### PHP-FPM 7.3 ##############################################
   php-fpm:
     build:
       context: ./php-fpm
       args:
-        - LARADOCK_PHP_VERSION=7.3
+        - LARADOCK_PHP_VERSION=7.2
         - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
         - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
         - INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}
@@ -194,7 +212,7 @@ services:
         - https_proxy
         - no_proxy
     volumes:
-      - ./php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
+      - ./php-fpm/php7.2.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
     expose:
       - "9000"
@@ -204,7 +222,7 @@ services:
       - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
       - DOCKER_HOST=tcp://docker-in-docker:2375
       - FAKETIME=${PHP_FPM_FAKETIME}
-      - PHP_VERSION=7.3
+      - PHP_VERSION=7.2
     depends_on:
       - workspace
     networks:
@@ -216,6 +234,8 @@ services:
           - spgr.cloud
           - ms-ed.spgr.cloud
           - ms-ed.spgr.local
+          - sambo.developer
+          - olymp.developer
     links:
       - docker-in-docker
 
@@ -257,6 +277,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - sambo.developer
+          - olymp.developer
   ### Laravel Horizon ############################################
   laravel-horizon:
     build:
@@ -310,6 +332,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - sambo.developer
+          - olymp.developer
       backend:
         aliases:
           - local.spgr
@@ -318,6 +342,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - sambo.developer
+          - olymp.developer
 
   ### Blackfire ########################################
   blackfire:
