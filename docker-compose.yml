@@ -138,25 +138,25 @@ services:
       - docker-in-docker
     networks:
       frontend:
-          aliases:
-            - spgr.local
-            - spgr.trc
-            - spgr.epp
-            - spgr.cloud
-            - ms-ed.spgr.cloud
-            - ms-ed.spgr.local
-            - sambo.developer
-            - olymp.developer
+        aliases:
+          - local.spgr
+          - trc.spgr
+          - epp.spgr
+          - uzd.spgr
+          - repair.spgr
+          - cloud.spgr
+          - ms-ed.cloud.spgr
+          - ms-ed.local.spgr
       backend:
         aliases:
-          - spgr.local
-          - spgr.trc
-          - spgr.epp
-          - spgr.cloud
-          - ms-ed.spgr.cloud
-          - ms-ed.spgr.local
-          - sambo.developer
-          - olymp.developer
+          - local.spgr
+          - trc.spgr
+          - epp.spgr
+          - uzd.spgr
+          - repair.spgr
+          - cloud.spgr
+          - ms-ed.cloud.spgr
+          - ms-ed.local.spgr
 
   ### PHP-FPM 7.3 ##############################################
   php-fpm:
@@ -228,14 +228,14 @@ services:
     networks:
       backend:
         aliases:
-          - spgr.local
-          - spgr.trc
-          - spgr.epp
-          - spgr.cloud
-          - ms-ed.spgr.cloud
-          - ms-ed.spgr.local
-          - sambo.developer
-          - olymp.developer
+          - local.spgr
+          - trc.spgr
+          - epp.spgr
+          - uzd.spgr
+          - repair.spgr
+          - cloud.spgr
+          - ms-ed.cloud.spgr
+          - ms-ed.local.spgr
     links:
       - docker-in-docker
 
@@ -329,21 +329,21 @@ services:
           - local.spgr
           - trc.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
-          - sambo.developer
-          - olymp.developer
       backend:
         aliases:
           - local.spgr
           - trc.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
-          - sambo.developer
-          - olymp.developer
 
   ### Blackfire ########################################
   blackfire:
