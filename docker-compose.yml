@@ -47,9 +47,12 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   cassandra:
     driver: ${VOLUMES_DRIVER}
+  graylog:
+    driver: ${VOLUMES_DRIVER}
+  dind:
+    driver: ${VOLUMES_DRIVER}
 
 services:
-
   ### Workspace Utilities ##################################
   workspace:
     build:

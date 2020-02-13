@@ -14,4 +14,8 @@
 /nginx/ssl/*.csr
 /workspace/insecure_id_rsa
 /workspace/insecure_id_rsa.pub
+
+/.devcontainer/*
+!/.devcontainer/devcontainer.example.json
+!/.devcontainer/docker-compose.extend-example.yml
 .DS_Store
