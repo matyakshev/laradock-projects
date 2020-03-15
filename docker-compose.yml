@@ -59,6 +59,7 @@ services:
       context: ./workspace
       args:
         - LARADOCK_PHP_VERSION=${PHP_VERSION}
+        - INSTALL_SUPERVISOR=${PHP_INSTALL_SUPERVISOR}
         - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
         - INSTALL_SUBVERSION=${WORKSPACE_INSTALL_SUBVERSION}
         - INSTALL_XDEBUG=${WORKSPACE_INSTALL_XDEBUG}
@@ -148,8 +149,10 @@ services:
           - uzd.spgr
           - repair.spgr
           - cloud.spgr
+          - rel-cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - ms-ed.rel-cloud.spgr
       backend:
         aliases:
           - local.spgr
@@ -158,8 +161,10 @@ services:
           - uzd.spgr
           - repair.spgr
           - cloud.spgr
+          - rel-cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - ms-ed.rel-cloud.spgr
 
   ### PHP-FPM 7.3 ##############################################
   php-fpm:
@@ -239,6 +244,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - rel-cloud.spgr
+          - ms-ed.rel-cloud.spgr
     links:
       - docker-in-docker
 
@@ -280,8 +287,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
-          - sambo.developer
-          - olymp.developer
+          - rel-cloud.spgr
+          - ms-ed.rel-cloud.spgr
   ### Laravel Horizon ############################################
   laravel-horizon:
     build:
@@ -337,6 +344,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - rel-cloud.spgr
+          - ms-ed.rel-cloud.spgr
       backend:
         aliases:
           - local.spgr
@@ -347,6 +356,8 @@ services:
           - cloud.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
+          - rel-cloud.spgr
+          - ms-ed.rel-cloud.spgr
 
   ### Blackfire ########################################
   blackfire:
