@@ -111,6 +111,9 @@ USER root
 COPY ./aliases.sh /root/aliases.sh
 COPY ./aliases.sh /home/laradock/aliases.sh
 
+COPY ./.ssh /home/laradock/.ssh
+COPY ./.ssh /root/.ssh
+
 RUN sed -i 's/\r//' /root/aliases.sh && \
     sed -i 's/\r//' /home/laradock/aliases.sh && \
     chown laradock:laradock /home/laradock/aliases.sh && \
@@ -138,12 +141,17 @@ COPY ./composer.json /home/laradock/.composer/composer.json
 # Add the auth.json for magento 2 credentials
 COPY ./auth.json /home/laradock/.composer/auth.json
 
+
+
 # Make sure that ~/.composer belongs to laradock
 RUN chown -R laradock:laradock /home/laradock/.composer
 
 # Export composer vendor path
 RUN echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+
+USER root
+RUN apt-get -y install tmux
 
 USER laradock
 
@@ -155,6 +163,8 @@ RUN if [ ${COMPOSER_GLOBAL_INSTALL} = true ]; then \
     # run the install
     composer global install \
 ;fi
+
+
 
 # Check if auth file is disabled
 ARG COMPOSER_AUTH=false

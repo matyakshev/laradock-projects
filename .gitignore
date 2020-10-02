@@ -14,6 +14,7 @@
 /nginx/ssl/*.csr
 /workspace/insecure_id_rsa
 /workspace/insecure_id_rsa.pub
+/workspace/.ssh
 
 /.devcontainer/*
 !/.devcontainer/devcontainer.example.json
