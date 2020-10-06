@@ -182,17 +182,17 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
 # xDebug:
 ###########################################################################
 
-ARG INSTALL_XDEBUG=false
+#ARG INSTALL_XDEBUG=false
 
-RUN if [ ${INSTALL_XDEBUG} = true ]; then \
-  # Install the xdebug extension
-  if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
-    pecl install xdebug-2.5.5; \
-  else \
-    pecl install xdebug; \
-  fi && \
-  docker-php-ext-enable xdebug \
-;fi
+#RUN if [ ${INSTALL_XDEBUG} = true ]; then \
+#  # Install the xdebug extension
+#  if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
+#    pecl install xdebug-2.5.5; \
+#  else \
+#    pecl install xdebug; \
+#  fi && \
+#  docker-php-ext-enable xdebug \
+#;fi
 
 # Copy xdebug configuration for remote debugging
 COPY ./70xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini

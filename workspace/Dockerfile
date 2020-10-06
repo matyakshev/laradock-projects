@@ -111,8 +111,8 @@ USER root
 COPY ./aliases.sh /root/aliases.sh
 COPY ./aliases.sh /home/laradock/aliases.sh
 
-COPY ./.ssh /home/laradock/.ssh
-COPY ./.ssh /root/.ssh
+#COPY ./.ssh /home/laradock/.ssh
+#COPY ./.ssh /root/.ssh
 
 RUN sed -i 's/\r//' /root/aliases.sh && \
     sed -i 's/\r//' /home/laradock/aliases.sh && \
