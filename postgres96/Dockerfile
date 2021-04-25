@@ -3,4 +3,4 @@ FROM postgres:${POSTGRES_VERSION}
 
 CMD ["postgres"]
 
-EXPOSE 5433
+EXPOSE 5432
