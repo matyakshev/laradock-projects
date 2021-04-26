@@ -110,27 +110,25 @@ services:
           - cloud.spgr
           - local.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
           - egk.astra
-          - bvs.astra
           - cuv.laravel
-          - api.bia
-          - site.bia
-          - simple.project
+          - mbtools.laravel
       backend:
         aliases:
           - cloud.spgr
           - local.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
           - egk.astra
-          - bvs.astra
           - cuv.laravel
-          - api.bia
-          - site.bia
-          - simple.project
+          - mbtools.laravel
 
   ### PHP-FPM 7.0 ##############################################
   php-fpm-70:
@@ -203,12 +201,11 @@ services:
       backend:
         aliases:
           - egk.astra
-          - bvs.astra
           - cuv.laravel
     links:
       - docker-in-docker
 
-  php-fpm:
+  php-fpm-72:
     build:
       context: ./php-fpm
       dockerfile: 72-Dockerfile
@@ -281,6 +278,8 @@ services:
           - cloud.spgr
           - local.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
     links:
@@ -356,9 +355,7 @@ services:
     networks:
       backend:
         aliases:
-          - api.bia
-          - site.bia
-          - simple.project
+          - mbtools.laravel
     links:
       - docker-in-docker
 
@@ -383,7 +380,7 @@ services:
       - "${NGINX_HOST_HTTPS_PORT}:443"
     depends_on:
       - php-fpm-70
-      - php-fpm
+      - php-fpm-72
       - php-fpm-74
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
@@ -393,52 +390,105 @@ services:
           - cloud.spgr
           - local.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
           - egk.astra
-          - bvs.astra
           - cuv.laravel
-          - api.bia
-          - site.bia
-          - simple.project
+          - mbtools.laravel
       backend:
         aliases:
           - cloud.spgr
           - local.spgr
           - epp.spgr
+          - uzd.spgr
+          - repair.spgr
           - ms-ed.cloud.spgr
           - ms-ed.local.spgr
           - egk.astra
-          - bvs.astra
           - cuv.laravel
-          - api.bia
-          - site.bia
-          - simple.project
+          - mbtools.laravel
+
+  ### MySQL ################################################
+  mysql:
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${WORKSPACE_TIMEZONE}
+    volumes:
+      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+      - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    ports:
+      - "${MYSQL_PORT}:3306"
+    networks:
+      - backend
 
   ### PostgreSQL ###########################################
-  postgres13:
-    build: ./postgres13
+  postgres11:
+    build: ./postgres11
     volumes:
-      - ${DATA_PATH_HOST}/postgres13:/var/lib/postgresql/data
+      - ${DATA_PATH_HOST}/postgres11:/var/lib/postgresql/data
+      - ./postgres11/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - GITLAB_POSTGRES_INIT=${GITLAB_POSTGRES_INIT}
+      - GITLAB_POSTGRES_USER=${GITLAB_POSTGRES_USER}
+      - GITLAB_POSTGRES_PASSWORD=${GITLAB_POSTGRES_PASSWORD}
+      - GITLAB_POSTGRES_DB=${GITLAB_POSTGRES_DB}
+      - JUPYTERHUB_POSTGRES_INIT=${JUPYTERHUB_POSTGRES_INIT}
+      - JUPYTERHUB_POSTGRES_USER=${JUPYTERHUB_POSTGRES_USER}
+      - JUPYTERHUB_POSTGRES_PASSWORD=${JUPYTERHUB_POSTGRES_PASSWORD}
+      - JUPYTERHUB_POSTGRES_DB=${JUPYTERHUB_POSTGRES_DB}
+      - SONARQUBE_POSTGRES_INIT=${SONARQUBE_POSTGRES_INIT}
+      - SONARQUBE_POSTGRES_DB=${SONARQUBE_POSTGRES_DB}
+      - SONARQUBE_POSTGRES_USER=${SONARQUBE_POSTGRES_USER}
+      - SONARQUBE_POSTGRES_PASSWORD=${SONARQUBE_POSTGRES_PASSWORD}
+      - POSTGRES_CONFLUENCE_INIT=${CONFLUENCE_POSTGRES_INIT}
+      - POSTGRES_CONFLUENCE_DB=${CONFLUENCE_POSTGRES_DB}
+      - POSTGRES_CONFLUENCE_USER=${CONFLUENCE_POSTGRES_USER}
+      - POSTGRES_CONFLUENCE_PASSWORD=${CONFLUENCE_POSTGRES_PASSWORD}
     networks:
       - backend
+
 
   postgres96:
     build: ./postgres96
     volumes:
       - ${DATA_PATH_HOST}/postgres96:/var/lib/postgresql/data
+      - ./postgres96/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "5433:5432"
+      - "5433:5433"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - GITLAB_POSTGRES_INIT=${GITLAB_POSTGRES_INIT}
+      - GITLAB_POSTGRES_USER=${GITLAB_POSTGRES_USER}
+      - GITLAB_POSTGRES_PASSWORD=${GITLAB_POSTGRES_PASSWORD}
+      - GITLAB_POSTGRES_DB=${GITLAB_POSTGRES_DB}
+      - JUPYTERHUB_POSTGRES_INIT=${JUPYTERHUB_POSTGRES_INIT}
+      - JUPYTERHUB_POSTGRES_USER=${JUPYTERHUB_POSTGRES_USER}
+      - JUPYTERHUB_POSTGRES_PASSWORD=${JUPYTERHUB_POSTGRES_PASSWORD}
+      - JUPYTERHUB_POSTGRES_DB=${JUPYTERHUB_POSTGRES_DB}
+      - SONARQUBE_POSTGRES_INIT=${SONARQUBE_POSTGRES_INIT}
+      - SONARQUBE_POSTGRES_DB=${SONARQUBE_POSTGRES_DB}
+      - SONARQUBE_POSTGRES_USER=${SONARQUBE_POSTGRES_USER}
+      - SONARQUBE_POSTGRES_PASSWORD=${SONARQUBE_POSTGRES_PASSWORD}
+      - POSTGRES_CONFLUENCE_INIT=${CONFLUENCE_POSTGRES_INIT}
+      - POSTGRES_CONFLUENCE_DB=${CONFLUENCE_POSTGRES_DB}
+      - POSTGRES_CONFLUENCE_USER=${CONFLUENCE_POSTGRES_USER}
+      - POSTGRES_CONFLUENCE_PASSWORD=${CONFLUENCE_POSTGRES_PASSWORD}
     networks:
       - backend
 
@@ -451,6 +501,7 @@ services:
       - "${REDIS_PORT}:6379"
     networks:
       - backend
+
 
   ### RabbitMQ #############################################
   rabbitmq:
@@ -468,9 +519,23 @@ services:
       - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
     depends_on:
       - php-fpm-70
-      - php-fpm
+      - php-fpm-72
       - php-fpm-74
     networks:
+      - backend
+
+  ### Laravel Echo Server #######################################
+  laravel-echo-server:
+    build:
+      context: ./laravel-echo-server
+    volumes:
+      - ./laravel-echo-server/laravel-echo-server.json:/app/laravel-echo-server.json:ro
+    ports:
+      - "${LARAVEL_ECHO_SERVER_PORT}:6001"
+    links:
+      - redis
+    networks:
+      - frontend
       - backend
 
   ### Docker-in-Docker ################################################

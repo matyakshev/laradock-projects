@@ -20,3 +20,5 @@
 !/.devcontainer/devcontainer.example.json
 !/.devcontainer/docker-compose.extend-example.yml
 .DS_Store
+
+docker-compose.yml

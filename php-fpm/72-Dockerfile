@@ -189,13 +189,13 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
   if [ $(php -r "echo PHP_MAJOR_VERSION;") = "5" ]; then \
     pecl install xdebug-2.5.5; \
   else \
-    pecl install xdebug; \
+    pecl install xdebug-2.9.8; \
   fi && \
   docker-php-ext-enable xdebug \
 ;fi
 
 # Copy xdebug configuration for remote debugging
-COPY ./72xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN sed -i "s/xdebug.remote_autostart=0/xdebug.remote_autostart=1/" /usr/local/etc/php/conf.d/xdebug.ini && \
     sed -i "s/xdebug.remote_enable=0/xdebug.remote_enable=1/" /usr/local/etc/php/conf.d/xdebug.ini && \

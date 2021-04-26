@@ -27,8 +27,8 @@ RUN set -x ; \
 ARG PHP70_UPSTREAM_CONTAINER=php-fpm-70
 ARG PHP70_UPSTREAM_PORT=9000
 
-ARG PHP72_UPSTREAM_CONTAINER=php-fpm-72
-ARG PHP72_UPSTREAM_PORT=9000
+ARG PHP_UPSTREAM_CONTAINER=php-fpm
+ARG PHP_UPSTREAM_PORT=9000
 
 ARG PHP74_UPSTREAM_CONTAINER=php-fpm-74
 ARG PHP74_UPSTREAM_PORT=9000
@@ -40,9 +40,8 @@ RUN touch /var/log/messages
 COPY logrotate/nginx /etc/logrotate.d/
 
 # Set upstream conf and remove the default conf
-RUN echo "upstream php-upstream { server ${PHP72_UPSTREAM_CONTAINER}:${PHP72_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf
+RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf
 RUN echo "upstream php70-upstream { server ${PHP70_UPSTREAM_CONTAINER}:${PHP70_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf
-RUN echo "upstream php72-upstream { server ${PHP72_UPSTREAM_CONTAINER}:${PHP72_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf
 RUN echo "upstream php74-upstream { server ${PHP74_UPSTREAM_CONTAINER}:${PHP74_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf
 RUN rm /etc/nginx/conf.d/default.conf
 
