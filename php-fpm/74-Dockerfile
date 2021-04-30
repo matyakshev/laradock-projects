@@ -350,23 +350,18 @@ RUN if [ ${INSTALL_XHPROF} = false ]; then \
 
 ARG INSTALL_AMQP=false
 
-RUN if [ ${INSTALL_AMQP} = true ]; then \
-    # download and install manually, to make sure it's compatible with ampq installed by pecl later
-    # install cmake first
-    apt-get -y install cmake && \
-    curl -L -o /tmp/rabbitmq-c.tar.gz https://github.com/alanxz/rabbitmq-c/archive/master.tar.gz && \
-    mkdir -p rabbitmq-c && \
-    tar -C rabbitmq-c -zxvf /tmp/rabbitmq-c.tar.gz --strip 1 && \
-    cd rabbitmq-c/ && \
-    mkdir _build && cd _build/ && \
-    cmake .. && \
-    cmake --build . --target install && \
-    # Install the amqp extension
-    pecl install amqp && \
-    docker-php-ext-enable amqp && \
-    # Install the sockets extension
-    docker-php-ext-install sockets \
-;fi
+RUN set -eux; \
+    if [ ${INSTALL_AMQP} = true ]; then \
+      # # Install the amqp extension
+      apt-get -yqq install librabbitmq-dev; \
+      if [ $(php -r "echo PHP_MAJOR_VERSION;") = "8" ]; then \
+        pecl install amqp-1.11.0beta; \
+      else \
+        pecl install amqp; \
+      fi; \
+      docker-php-ext-enable amqp; \
+      php -m | grep -oiE '^amqp$'; \
+    fi
 
 ###########################################################################
 # GEARMAN:
@@ -662,11 +657,30 @@ RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
 USER root
 
 ARG INSTALL_IMAGEMAGICK=false
+ARG IMAGEMAGICK_VERSION=latest
+ENV IMAGEMAGICK_VERSION ${IMAGEMAGICK_VERSION}
 
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
-    apt-get install -y libmagickwand-dev imagemagick && \
-    pecl install imagick && \
-    docker-php-ext-enable imagick \
+    apt-get update -yqq && \
+    apt-get install -yqq libmagickwand-dev imagemagick && \
+    if [ $(php -r "echo PHP_MAJOR_VERSION;") = "8" ]; then \
+      cd /tmp && \
+      if [ ${IMAGEMAGICK_VERSION} = "latest" ]; then \
+        git clone https://github.com/Imagick/imagick; \
+      else \
+        git clone --branch ${IMAGEMAGICK_VERSION} https://github.com/Imagick/imagick; \
+      fi && \
+      cd imagick && \
+      phpize && \
+      ./configure && \
+      make && \
+      make install && \
+      rm -r /tmp/imagick; \
+    else \
+      pecl install imagick; \
+    fi && \
+    docker-php-ext-enable imagick; \
+    php -m | grep -q 'imagick' \
 ;fi
 
 ###########################################################################
