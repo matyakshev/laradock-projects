@@ -461,8 +461,6 @@ RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
 
 ARG INSTALL_WORKSPACE_SSH=false
 
-COPY insecure_id_rsa /tmp/id_rsa
-COPY insecure_id_rsa.pub /tmp/id_rsa.pub
 
 RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
     rm -f /etc/service/sshd/down && \
@@ -1260,46 +1258,6 @@ RUN if [ ${INSTALL_DUSK_DEPS} = true ]; then \
   && unzip chromedriver_linux64.zip \
   && mv chromedriver /usr/local/bin/ \
   && rm chromedriver_linux64.zip \
-;fi
-
-###########################################################################
-# Phalcon:
-###########################################################################
-
-ARG INSTALL_PHALCON=false
-ARG LARADOCK_PHALCON_VERSION
-ENV LARADOCK_PHALCON_VERSION ${LARADOCK_PHALCON_VERSION}
-
-RUN if [ $INSTALL_PHALCON = true ]; then \
-    apt-get update && apt-get install -y unzip libpcre3-dev gcc make re2c git automake autoconf\
-    && git clone https://github.com/jbboehr/php-psr.git \
-    && cd php-psr \
-    && phpize \
-    && ./configure \
-    && make \
-    && make test \
-    && make install \
-    && curl -L -o /tmp/cphalcon.zip https://github.com/phalcon/cphalcon/archive/v${LARADOCK_PHALCON_VERSION}.zip \
-    && unzip -d /tmp/ /tmp/cphalcon.zip \
-    && cd /tmp/cphalcon-${LARADOCK_PHALCON_VERSION}/build \
-    && ./install \
-    && echo "extension=psr.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/phalcon.ini \
-    && echo "extension=phalcon.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/phalcon.ini \
-    && ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/phalcon.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/30-phalcon.ini \
-    && rm -rf /tmp/cphalcon* \
-;fi
-
-###########################################################################
-# MySQL Client:
-###########################################################################
-
-USER root
-
-ARG INSTALL_MYSQL_CLIENT=false
-
-RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
-    apt-get update -yqq && \
-    apt-get -y install mysql-client \
 ;fi
 
 ###########################################################################
