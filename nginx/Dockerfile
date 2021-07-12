@@ -24,14 +24,13 @@ RUN set -x ; \
     addgroup -g 82 -S www-data ; \
     adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
 
-ARG PHP70_UPSTREAM_CONTAINER=php-fpm-70
+ARG PHP70_UPSTREAM_CONTAINER=fpm70
 ARG PHP70_UPSTREAM_PORT=9000
 
-ARG PHP_UPSTREAM_CONTAINER=php-fpm
+ARG PHP_UPSTREAM_CONTAINER=fpm72
 ARG PHP_UPSTREAM_PORT=9000
-
-ARG PHP74_UPSTREAM_CONTAINER=php-fpm-74
-ARG PHP74_UPSTREAM_PORT=9000
+ARG PHP80_UPSTREAM_CONTAINER=fpm80
+ARG PHP80_UPSTREAM_PORT=9000
 
 # Create 'messages' file used from 'logrotate'
 RUN touch /var/log/messages
@@ -42,7 +41,7 @@ COPY logrotate/nginx /etc/logrotate.d/
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf
 RUN echo "upstream php70-upstream { server ${PHP70_UPSTREAM_CONTAINER}:${PHP70_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf
-RUN echo "upstream php74-upstream { server ${PHP74_UPSTREAM_CONTAINER}:${PHP74_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf
+RUN echo "upstream php80-upstream { server ${PHP80_UPSTREAM_CONTAINER}:${PHP80_UPSTREAM_PORT}; }" >> /etc/nginx/conf.d/upstream.conf
 RUN rm /etc/nginx/conf.d/default.conf
 
 ADD ./startup.sh /opt/startup.sh
