@@ -82,7 +82,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
         backend:
           aliases:
             - cloud.spgr.local
@@ -96,7 +96,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
       links:
         - docker-in-docker
 
@@ -181,7 +181,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
       links:
         - docker-in-docker
     fpm72:
@@ -264,7 +264,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
       links:
         - docker-in-docker
     fpm80:
@@ -347,7 +347,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
       links:
         - docker-in-docker
 
@@ -390,7 +390,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
         backend:
           aliases:
             - cloud.spgr.local
@@ -404,7 +404,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
 
 ### PostgreSQL ###########################################
     postgres13:
@@ -435,7 +435,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
 
     postgres96:
       build:
@@ -465,7 +465,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
 
 ### RabbitMQ #############################################
     rabbitmq:
@@ -499,7 +499,7 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
 
 
 ### Redis ################################################
@@ -535,6 +535,6 @@ services:
             - soop.local
             - api.bia.local
             - las.tm.spgr.local
-            - import.tm.spgr.local
+            - proc.tm.spgr.local
 
 
